@@ -18,4 +18,5 @@ class AppShell extends Component<*> {
   }
 }
 
-render(<AppShell />, document.getElementById("app"))
+const appRoot = document.getElementById("app")
+if (appRoot) render(<AppShell />, appRoot)

@@ -1,5 +1,7 @@
 // @flow
-import React from "react"
+import React, { Component } from "react"
+import styled from "styled-components"
+
 import { Flex, Text } from "./elements"
 
 const ShortcutText = Text.extend`
@@ -34,7 +36,22 @@ const ContentText = Text.extend`
 `
 
 type ContentPropTypes = {
+  filterBy: string,
   topic?: Topic
+}
+
+const filterShortcut = (shortcut, filterBy) => {
+  return shortcut
+    .join(" ")
+    .toLowerCase()
+    .includes(filterBy.toLowerCase())
+}
+
+const filterCommand = (filterBy, commands) => command => {
+  return (
+    command.toLowerCase().includes(filterBy.toLowerCase()) ||
+    filterShortcut(commands[command].shortcut, filterBy)
+  )
 }
 
 function CheatSheetContent(props: ContentPropTypes) {
@@ -43,14 +60,16 @@ function CheatSheetContent(props: ContentPropTypes) {
   const commands = require(`../data/${props.topic}.json`)
   return (
     <ContentContainer>
-      {Object.keys(commands).map(command => {
-        return (
-          <Flex key={command} align="center" direction="horizontal">
-            <ContentText>{command + ":"}</ContentText>
-            <Shortcut keyString={commands[command].shortcut} />
-          </Flex>
-        )
-      })}
+      {Object.keys(commands)
+        .filter(filterCommand(props.filterBy, commands))
+        .map(command => {
+          return (
+            <Flex key={command} align="center" direction="horizontal">
+              <ContentText>{command + ":"}</ContentText>
+              <Shortcut keyString={commands[command].shortcut} />
+            </Flex>
+          )
+        })}
     </ContentContainer>
   )
 }
@@ -67,17 +86,56 @@ const Header = Text.extend`
   letter-spacing: 0.2em;
 `
 
+const SearchInput = styled.input.attrs({ placeholder: "search..." })`
+  background-color: #565656;
+  border: none;
+  color: white;
+  font-family: inherit;
+  font-size: inherit;
+  margin: 1em;
+  padding: 0.3em 0.5em;
+  outline: none;
+`
+
+type SearchPropTypes = {
+  onSearch: Function
+}
+
+function Search(props: SearchPropTypes) {
+  return <SearchInput onChange={e => props.onSearch(e.target.value)} />
+}
+
 type PropTypes = {
   topic?: Topic
 }
 
-function CheatSheet(props: PropTypes) {
-  return (
-    <Container>
-      <Header>{props.topic || "Select a cheatsheet from the sidebar"}</Header>
-      <CheatSheetContent topic={props.topic} />
-    </Container>
-  )
+type StateTypes = {
+  searchTerm: string
+}
+
+class CheatSheet extends Component<PropTypes, StateTypes> {
+  state = {
+    searchTerm: ""
+  }
+
+  updateSearch = (searchTerm: string) => this.setState({ searchTerm })
+
+  render() {
+    return (
+      <Container>
+        <Flex align="center" direction="horizontal">
+          <Header>
+            {this.props.topic || "Select a cheatsheet from the sidebar"}
+          </Header>
+          <Search onSearch={this.updateSearch} />
+        </Flex>
+        <CheatSheetContent
+          topic={this.props.topic}
+          filterBy={this.state.searchTerm}
+        />
+      </Container>
+    )
+  }
 }
 
 export default CheatSheet
