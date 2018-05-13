@@ -1,6 +1,6 @@
 {
   "View windows": {
-    "shortcut": "Ctrl + X",
+    "shortcut": ["Ctrl", "X"],
     "description": "Views all windows in the current session"
   }
 }

@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from "react"
-import { Box, Text } from "proton-native"
 
+import { Flex } from "./elements"
 import SideBar from "./SideBar"
 import CheatSheet from "./CheatSheet"
 
@@ -19,14 +19,14 @@ class MainScreen extends Component<PropTypes, StateTypes> {
 
   render() {
     return (
-      <Box vertical={false} padded={false}>
+      <Flex direction="horizontal">
         <SideBar
           topics={this.props.topics}
           selectedTopic={this.state.currentTopic}
           onSelectTopic={this.changeTopic}
         />
         <CheatSheet topic={this.state.currentTopic} />
-      </Box>
+      </Flex>
     )
   }
 }

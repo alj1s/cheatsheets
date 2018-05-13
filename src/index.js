@@ -1,22 +1,21 @@
 // @flow
 import React, { Component } from "react"
-import { render, Window, App, Menu } from "proton-native"
+import { render } from "react-dom"
 
+import { Flex, Menu } from "./elements"
 import MainScreen from "./MainScreen"
 
 class AppShell extends Component<*> {
   render() {
     return (
-      <App>
+      <Flex>
         <Menu label="Edit">
           <Menu.Item>Preferences...</Menu.Item>
         </Menu>
-        <Window title="Cheatsheets" menuBar>
-          <MainScreen topics={["tmux"]} />
-        </Window>
-      </App>
+        <MainScreen topics={["tmux"]} />
+      </Flex>
     )
   }
 }
 
-render(<AppShell />)
+render(<AppShell />, document.getElementById("app"))
