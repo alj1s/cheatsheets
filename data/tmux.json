@@ -1,6 +1,22 @@
 {
-  "View windows": {
-    "shortcut": ["Ctrl", "X"],
-    "description": "Views all windows in the current session"
+  "Split vertically": {
+    "shortcut": ["Prefix", "|"],
+    "description": "Create new vertical split"
+  },
+  "Split horizontally": {
+    "shortcut": ["Prefix", "-"],
+    "description": "Create new horizontal split"
+  },
+  "List windows": {
+    "shortcut": ["Prefix", "w"],
+    "description": "List current tmux windows"
+  },
+  "Previous window": {
+    "shortcut": ["Prefix", "p"],
+    "description": "Jump to previous window"
+  },
+  "Next windows": {
+    "shortcut": ["Prefix", "n"],
+    "description": "Jump to next window"
   }
 }

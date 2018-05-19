@@ -32,6 +32,7 @@ const ContentContainer = styled(Flex)`
 
 const ContentText = styled(Text)`
   color: white;
+  min-width: 10%;
   margin-right: 0.5em;
 `
 
@@ -54,6 +55,10 @@ const filterCommand = (filterBy, commands) => command => {
   )
 }
 
+const Row = styled(Flex)`
+margin-bottom: 1em;
+`
+
 function CheatSheetContent(props: ContentPropTypes) {
   if (!props.topic) return null
 
@@ -64,10 +69,10 @@ function CheatSheetContent(props: ContentPropTypes) {
         .filter(filterCommand(props.filterBy, commands))
         .map(command => {
           return (
-            <Flex key={command} align="center" direction="horizontal">
+            <Row key={command} align="center" direction="horizontal">
               <ContentText>{command + ":"}</ContentText>
               <Shortcut keyString={commands[command].shortcut} />
-            </Flex>
+            </Row>
           )
         })}
     </ContentContainer>
