@@ -1,9 +1,9 @@
 // @flow
-import { css } from "styled-components"
+import styled, { css } from "react-emotion"
 
 import View from "./View"
 
-export default View.extend`
+export default styled(View)`
   display: flex;
   flex-direction: ${props =>
     props.direction === "horizontal" ? "row" : "column"};

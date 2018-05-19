@@ -1,15 +1,16 @@
 // @flow
 import React from "react"
+import styled from "react-emotion"
 
 import { Flex, Button } from "./elements"
 
-const Container = Flex.extend.attrs({ direction: "vertical" })`
+const Container = styled(Flex)`
   width: 20%;
   height: 100vh;
   background-color: #FBFF45;
 `
 
-const SideBarButton = Button.extend`
+const SideBarButton = styled(Button)`
   background-color: transparent;
   border: none;
   color: #3b3b3b;
@@ -31,7 +32,7 @@ type PropTypes = {
 
 function SideBar(props: PropTypes) {
   return (
-    <Container>
+    <Container direction="vertical">
       {props.topics.map(topic => {
         return (
           <SideBarButton key={topic} onClick={() => props.onSelectTopic(topic)}>

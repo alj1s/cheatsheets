@@ -1,4 +1,4 @@
 // @flow
-import styled from "styled-components"
+import styled from "react-emotion"
 
-export default styled.span``
+export default styled("span")``

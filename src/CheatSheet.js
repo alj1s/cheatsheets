@@ -1,10 +1,10 @@
 // @flow
 import React, { Component } from "react"
-import styled from "styled-components"
+import styled from "react-emotion"
 
 import { Flex, Text } from "./elements"
 
-const ShortcutText = Text.extend`
+const ShortcutText = styled(Text)`
   border: 1px solid white;
   color: white;
   font-family: monospace;
@@ -26,11 +26,11 @@ function Shortcut(props: ShortcutPropTypes) {
   )
 }
 
-const ContentContainer = Flex.extend`
+const ContentContainer = styled(Flex)`
   margin-left: 1em;
 `
 
-const ContentText = Text.extend`
+const ContentText = styled(Text)`
   color: white;
   margin-right: 0.5em;
 `
@@ -74,19 +74,19 @@ function CheatSheetContent(props: ContentPropTypes) {
   )
 }
 
-const Container = Flex.extend`
+const Container = styled(Flex)`
   background-color: #3b3b3b;
   width: 80%;
 `
 
-const Header = Text.extend`
+const Header = styled(Text)`
   color: white;
   margin: 1em auto;
   text-transform: uppercase;
   letter-spacing: 0.2em;
 `
 
-const SearchInput = styled.input.attrs({ placeholder: "search..." })`
+const SearchInput = styled("input")`
   background-color: #565656;
   border: none;
   color: white;
@@ -102,7 +102,7 @@ type SearchPropTypes = {
 }
 
 function Search(props: SearchPropTypes) {
-  return <SearchInput onChange={e => props.onSearch(e.target.value)} />
+  return <SearchInput placeholder="search..." onChange={e => props.onSearch(e.target.value)} />
 }
 
 type PropTypes = {
