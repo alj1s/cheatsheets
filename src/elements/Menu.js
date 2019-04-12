@@ -1,20 +1,19 @@
 // @flow
+import * as React from "react";
+import View from "./View";
 
-import * as React from "react"
-import View from "./View"
-
-type ItemPropTypes = {}
+type ItemPropTypes = {};
 function MenuItem(props: ItemPropTypes) {
-  return <View />
+  return <View />;
 }
 
 type PropTypes = {
   children: React.Node
-}
+};
 function Menu(props: PropTypes) {
-  return <View>{props.children}</View>
+  return <View>{props.children}</View>;
 }
 
-Menu.Item = MenuItem
+Menu.Item = MenuItem;
 
-export default Menu
+export default Menu;

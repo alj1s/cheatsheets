@@ -1,7 +1,7 @@
 // @flow
-import styled, { css } from "react-emotion"
+import styled, { css } from "styled-components";
 
-import View from "./View"
+import View from "./View";
 
 export default styled(View)`
   display: flex;
@@ -12,4 +12,4 @@ export default styled(View)`
     css`
       align-items: ${props.align};
     `};
-`
+`;

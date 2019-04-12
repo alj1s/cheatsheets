@@ -1,0 +1,10 @@
+{
+    "AppSyncApiName": "cheatsheets",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "AuthCognitoUserPoolId": {
+        "Fn::GetAtt": [
+            "authcognitod843f5d4",
+            "Outputs.UserPoolId"
+        ]
+    }
+}

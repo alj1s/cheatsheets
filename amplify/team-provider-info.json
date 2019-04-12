@@ -1,0 +1,19 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "cheatsheets-20190221194553-authRole",
+            "UnauthRoleArn": "arn:aws:iam::186266638322:role/cheatsheets-20190221194553-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::186266638322:role/cheatsheets-20190221194553-authRole",
+            "Region": "eu-west-1",
+            "DeploymentBucketName": "cheatsheets-20190221194553-deployment",
+            "UnauthRoleName": "cheatsheets-20190221194553-unauthRole",
+            "StackName": "cheatsheets-20190221194553",
+            "StackId": "arn:aws:cloudformation:eu-west-1:186266638322:stack/cheatsheets-20190221194553/4d40d830-3611-11e9-a819-0a86846a053c"
+        },
+        "categories": {
+            "auth": {
+                "cognitod843f5d4": {}
+            }
+        }
+    }
+}

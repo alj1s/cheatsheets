@@ -1,7 +1,7 @@
 // @flow
-import styled from "react-emotion"
+import styled from "styled-components";
 
-export default styled("div")`
+export default styled.div`
   margin: 0;
   padding: 0;
-`
+`;

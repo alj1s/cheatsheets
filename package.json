@@ -3,20 +3,25 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "build": "react-scripts build",
     "start": "react-scripts start",
     "test": "react-scripts test"
   },
   "devDependencies": {
     "babel-cli": "latest",
+    "babel-plugin-module-resolver": "^3.2.0",
     "babel-preset-env": "latest",
     "babel-preset-react": "latest",
     "flow-bin": "^0.72.0",
     "react-scripts": "^1.1.4"
   },
   "dependencies": {
-    "emotion": "^9.1.3",
-    "react": "^16.3.2",
-    "react-dom": "^16.3.2",
-    "react-emotion": "^9.1.3"
+    "aws-amplify": "^1.1.19",
+    "aws-amplify-react": "^2.3.0",
+    "react": "^16.8.2",
+    "react-dom": "^16.8.2",
+    "react-router-dom": "^4.3.1",
+    "styled-components": "^4.1.3",
+    "typeface-roboto": "^0.0.54"
   }
 }

@@ -1,0 +1,12 @@
+type Shortcut @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  description: String!
+  keySequence: [String!]!
+  cheatsheet: Cheatsheet! @connection(name: "CheatsheetShortcuts")
+}
+
+type Cheatsheet @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  name: String!
+  shortcuts: [Shortcut!]! @connection(name: "CheatsheetShortcuts")
+}
