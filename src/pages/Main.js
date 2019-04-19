@@ -1,13 +1,19 @@
 // @flow
 import React, { Component } from "react";
 import { API, graphqlOperation } from "aws-amplify";
+import Media from "react-media";
 
-import * as queries from "./graphql/queries";
-import * as mutations from "./graphql/mutations";
-import { Flex } from "./elements";
-import { SideBar, CheatSheet as CheatSheetView } from "./components";
+import * as queries from "../graphql/queries";
+import * as mutations from "../graphql/mutations";
+
+import { Flex } from "../elements";
+import { Nav, CheatSheet as CheatSheetView } from "../components";
 
 const currentSheetKey = "cheatsheet:currentSheet";
+
+const devices = {
+  laptop: { minWidth: 900 }
+};
 
 type Props = {
   onAddNew: () => void,
@@ -16,38 +22,38 @@ type Props = {
 };
 
 type State = {
-  currentSheet: CheatSheet,
+  currentSheet?: CheatSheet,
   error?: string,
   sheets: Array<any>
 };
 
 class Main extends Component<Props, State> {
-  state = { sheets: [] };
+  state = { sheets: [], currentSheet: undefined };
   onChangeSheet = async (currentSheetName: CheatSheetName) => {
     sessionStorage.setItem(currentSheetKey, currentSheetName);
     await this.fetchCheatsheet(currentSheetName);
   };
 
-  fetchCheatsheet = async currentSheetName => {
+  fetchCheatsheet = async (currentSheetName: CheatSheetName) => {
     if (this.state.sheets.length === 0) return;
-    console.log("fetch", currentSheetName, this.state.sheets);
-    const currentSheetId = this.state.sheets.find(
+    const currentSheet = this.state.sheets.find(
       s => s.name === currentSheetName
-    ).id;
-    const { data: { getCheatsheet } } = await API.graphql(
-      graphqlOperation(queries.getCheatsheet, { id: currentSheetId })
     );
-    console.log("fetch response", getCheatsheet);
-    this.setState({
-      currentSheet: getCheatsheet
-    });
+
+    if (currentSheet) {
+      const { data: { getCheatsheet } } = await API.graphql(
+        graphqlOperation(queries.getCheatsheet, { id: currentSheet.id })
+      );
+      this.setState({
+        currentSheet: getCheatsheet
+      });
+    }
   };
 
-  onAddShortcut = async shortcut => {
+  onAddShortcut = async (shortcut: Shortcut) => {
     const { data: { createShortcut: { cheatsheet } } } = await API.graphql(
       graphqlOperation(mutations.createShortcut, { input: shortcut })
     );
-    console.log("Create response", JSON.stringify(cheatsheet));
     this.setState({ currentSheet: cheatsheet });
   };
 
@@ -68,10 +74,11 @@ class Main extends Component<Props, State> {
       this.setState({ error: e });
     }
   }
-  render() {
+
+  renderLaptop() {
     return (
       <Flex direction="horizontal">
-        <SideBar
+        <Nav
           addNew={this.props.onAddNew}
           sheets={this.state.sheets.map(s => s.name)}
           activeSheet={
@@ -84,6 +91,33 @@ class Main extends Component<Props, State> {
           sheet={this.state.currentSheet}
         />
       </Flex>
+    );
+  }
+
+  renderMobile() {
+    return (
+      <Flex direction="vertical">
+        <Nav
+          addNew={this.props.onAddNew}
+          sheets={this.state.sheets.map(s => s.name)}
+          activeSheet={
+            this.state.currentSheet ? this.state.currentSheet.name : undefined
+          }
+          onSelectSheet={this.onChangeSheet}
+        />
+        <CheatSheetView
+          addShortcut={this.onAddShortcut}
+          sheet={this.state.currentSheet}
+        />
+      </Flex>
+    );
+  }
+
+  render() {
+    return (
+      <Media query={devices.laptop}>
+        {match => (match ? this.renderLaptop() : this.renderMobile())}
+      </Media>
     );
   }
 }

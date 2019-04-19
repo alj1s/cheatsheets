@@ -1,8 +1,9 @@
 // @flow
 import React, { useState } from "react";
 import { Auth } from "aws-amplify";
+import type { RouterHistory } from "react-router-dom";
 
-import { Field, FieldContainer, Page, SubmitButton } from "./components";
+import { Field, FieldContainer, Page, SubmitButton } from "../auth/components";
 
 const onSignUp = async (credentials, onComplete) => {
   try {
@@ -14,7 +15,9 @@ const onSignUp = async (credentials, onComplete) => {
   }
 };
 
-type Props = {};
+type Props = {
+  history: RouterHistory
+};
 
 function Signup(props: Props) {
   const [username, setUsername] = useState("");

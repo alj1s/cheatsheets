@@ -1,5 +1,5 @@
 // @flow
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 import { Button, Flex, Input, Text } from "../elements";
@@ -9,10 +9,14 @@ const ShortcutText = styled(Text)`
   border: 1px solid white;
   color: white;
   font-family: monospace;
-  letter-spacing: 0.15em;
-  margin-right: 0.5em;
+  letter-spacing: 3px;
+  margin-right: 0.5rem;
   text-transform: uppercase;
-  padding: 0.5em 1em;
+  padding: 0.5rem 1rem;
+`;
+
+const CheatSheetContainer = styled(Flex)`
+  padding-top: 1rem;
 `;
 
 type ShortcutPropTypes = {
@@ -31,18 +35,21 @@ function Shortcut(props: ShortcutPropTypes) {
 }
 
 const ContentContainer = styled(Flex)`
-  padding-left: 5em;
+  padding-left: 1rem;
 `;
 
 const ContentText = styled(Text)`
   color: white;
   min-width: 15%;
-  margin-right: 0.5em;
+  margin-right: 0.5rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
 `;
 
 type ContentPropTypes = {
+  addShortcut: Function,
   filterBy: string,
-  sheet?: CheatSheetName
+  sheet: CheatSheet
 };
 
 const filterShortcut = (shortcut, filterBy) => {
@@ -60,32 +67,26 @@ const filterCommand = filterBy => command => {
 };
 
 const Row = styled(Flex)`
-  margin-bottom: 1em;
+  margin-bottom: 1rem;
 `;
 
 const AddNewButton = styled(Button)`
   background-color: ${theme.accentColor};
   color: ${theme.background};
-  padding: 0.5em 3em;
-  width: 175px;
+  padding: 0.5rem 1.25rem;
 `;
 
 const ShortcutInput = styled(Input)`
-  min-width: 15%;
-  margin-right: 0.5em;
-  padding: 0.5em;
+  min-width: 0;
+  margin-right: 0.5rem;
+  padding: 0.5rem;
 `;
 
 function CheatSheetContent(props: ContentPropTypes) {
-  if (!props.sheet) return null;
-
-  console.log("sheet", JSON.stringify(props.sheet));
-
   const [shortcutDescription, setShortcutDescription] = useState("");
   const [shortcutKeySequence, setShortcutKeySequence] = useState([]);
 
-  const commands = props.sheet.shortcuts.items || [];
-  //require(`../../data/${props.sheet.name}.json`);
+  const commands = props.sheet.shortcuts ? props.sheet.shortcuts.items : [];
   return (
     <ContentContainer>
       {commands.filter(filterCommand(props.filterBy)).map(command => {
@@ -96,7 +97,7 @@ function CheatSheetContent(props: ContentPropTypes) {
           </Row>
         );
       })}
-      <Row align="center" style={{ marginTop: "1em" }} direction="horizontal">
+      <Row align="center" style={{ marginTop: "1rem" }} direction="horizontal">
         <ShortcutInput
           value={shortcutDescription}
           onChange={e => setShortcutDescription(e.target.value)}
@@ -124,14 +125,23 @@ function CheatSheetContent(props: ContentPropTypes) {
 
 const Container = styled(Flex)`
   background-color: ${theme.background};
-  width: 80%;
+  width: 100%;
+  height: 100vh;
+  padding-top: 60px;
+  padding-left: 1.5rem;
+  @media (min-width: 900px) {
+    padding-top: 0;
+    width: 80%;
+  }
 `;
 
-const Header = styled(Text)`
+const NoSelectionText = styled(Text)`
   color: white;
-  margin: 1em auto;
+  margin: 20vh auto;
   text-transform: uppercase;
-  letter-spacing: 0.2em;
+  text-align: center;
+  letter-spacing: 3px;
+  padding: 0 2rem;
 `;
 
 type SearchPropTypes = {
@@ -139,7 +149,12 @@ type SearchPropTypes = {
 };
 
 const SearchInput = styled(Input)`
-  margin-right: 1rem;
+  margin: 0.5rem 1rem;
+  border-radius: 2px;
+
+  @media (min-width: 900px) {
+    align-self: flex-end;
+  }
 `;
 
 function Search(props: SearchPropTypes) {
@@ -151,40 +166,32 @@ function Search(props: SearchPropTypes) {
   );
 }
 
-type PropTypes = {
-  sheet?: any
+type CheatSheetProps = {
+  sheet: ?CheatSheet,
+  addShortcut: Function
 };
 
-type StateTypes = {
-  searchTerm: string
-};
+function CheatSheetView({ sheet, addShortcut }: CheatSheetProps) {
+  const [searchTerm, setSearchTerm] = useState("");
 
-class CheatSheet extends Component<PropTypes, StateTypes> {
-  state = {
-    searchTerm: ""
-  };
-
-  updateSearch = (searchTerm: string) => this.setState({ searchTerm });
-
-  render() {
-    return (
-      <Container>
-        <Flex align="center" direction="horizontal">
-          <Header>
-            {this.props.sheet
-              ? this.props.sheet.name
-              : "Select a cheatsheet from the sidebar"}
-          </Header>
-          <Search onSearch={this.updateSearch} />
-        </Flex>
-        <CheatSheetContent
-          addShortcut={this.props.addShortcut}
-          sheet={this.props.sheet}
-          filterBy={this.state.searchTerm}
-        />
-      </Container>
-    );
-  }
+  return (
+    <Container>
+      {!sheet ? (
+        <NoSelectionText>Select a cheatsheet to view shortcuts</NoSelectionText>
+      ) : (
+        <React.Fragment>
+          <Search onSearch={setSearchTerm} />
+          <CheatSheetContainer>
+            <CheatSheetContent
+              addShortcut={addShortcut}
+              sheet={sheet}
+              filterBy={searchTerm}
+            />
+          </CheatSheetContainer>
+        </React.Fragment>
+      )}
+    </Container>
+  );
 }
 
-export default CheatSheet;
+export default CheatSheetView;

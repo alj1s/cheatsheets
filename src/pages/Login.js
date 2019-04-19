@@ -5,7 +5,7 @@ import { Auth } from "aws-amplify";
 import { Link } from "react-router-dom";
 
 import theme from "../styles/theme";
-import { Field, FieldContainer, Page, SubmitButton } from "./components";
+import { Field, FieldContainer, Page, SubmitButton } from "../auth/components";
 
 const SignUp = styled(Link)`
   display: flex;
@@ -13,8 +13,9 @@ const SignUp = styled(Link)`
   align-items: center;
   color: ${theme.accentColor};
   border: 1px solid ${theme.accentColor};
-  padding: 0.5em 0.75rem;
+  padding: 0.5rem 0.75rem;
   text-decoration: none;
+  text-transform: uppercase;
   width: 100%;
 `;
 
@@ -28,7 +29,9 @@ const onLogin = async (username, password, onComplete) => {
   }
 };
 
-type Props = {};
+type Props = {
+  onLogin: Function
+};
 
 function Login(props: Props) {
   const [username, setUsername] = useState("");
